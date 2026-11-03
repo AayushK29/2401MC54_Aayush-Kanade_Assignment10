@@ -1,0 +1,47 @@
+Operating Systems Assignment 10
+Implementation and Analysis
+
+1. Introduction
+
+This assignment focuses on memory management and paging concepts in xv6-riscv. Four tasks were implemented to understand physical memory allocation, virtual address translation, page protection and page replacement algorithms.
+
+2. Implementation
+
+Question 1: Physical Memory Allocation
+
+The `kalloc()` and `kfree()` functions in `kalloc.c` were modified to maintain counters for allocated pages, freed pages and available pages. A new system call, `memstats()`, was implemented to display these statistics. The `memtest.c` program uses `sbrk()` to allocate memory, access the allocated pages and release the memory. The memory statistics are displayed before and after these operations.
+
+Question 2: Virtual-to-Physical Address Translation
+
+A system call named `vtop()` was implemented using the existing `walk()` function in `vm.c`. It locates the page-table entry corresponding to a virtual address, checks whether the entry is valid and calculates the physical address using the physical frame address and page offset. The `vttest.c` program tests multiple allocated virtual addresses and an invalid address.
+
+Question 3: Page Table Management and Protection
+
+Two system calls, `pageinfo()` and `setreadonly()`, were implemented. The first displays the physical frame number and page flags, including present, writable and user permissions. The second removes the write permission from a page by clearing the `PTE_W` flag. The `pagetest.c` program verifies the permissions and attempts to write to the protected page. This causes a page fault, demonstrating memory protection.
+
+Question 4: Page Replacement Algorithms
+
+FIFO, LRU and Optimal page replacement algorithms were implemented in `pagereplace.c`. All three algorithms were tested using the given reference string with 3, 4 and 5 frames. For every reference, the program displays the frame contents and indicates whether a page hit or page fault occurred.
+
+3. Results and Observations
+
+The page replacement algorithms produced the following results:
+
+| Frames | Algorithm | Faults | Hits |
+| 3 | FIFO | 15 | 5 |
+| 3 | LRU | 12 | 8 |
+| 3 | Optimal | 9 | 11 |
+| 4 | FIFO | 10 | 10 |
+| 4 | LRU | 8 | 12 |
+| 4 | Optimal | 8 | 12 |
+| 5 | FIFO | 9 | 11 |
+| 5 | LRU | 7 | 13 |
+| 5 | Optimal | 7 | 13 |
+
+Optimal produced the fewest page faults for the given reference string. LRU also performed well, while FIFO produced more page faults in all three configurations.
+
+The memory allocation test demonstrated changes in allocated and available physical pages. The address translation test demonstrated the mapping between virtual and physical addresses. The page protection test demonstrated that removing write permission prevents a process from modifying the protected page.
+
+4. Conclusion
+
+This assignment provided practical understanding of memory management in xv6-riscv. It demonstrated how physical pages are allocated and released, how virtual addresses are translated, how page permissions are controlled and how different page replacement algorithms affect memory performance.
